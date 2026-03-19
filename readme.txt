@@ -1,69 +1,61 @@
-=== AI Provider for OpenAI ===
-Contributors: wordpressdotorg
-Tags: ai, openai, gpt, artificial-intelligence, connector
+=== AI Provider for Ollama ===
+Contributors: wordpressdotorg, h4l9k
+Tags: ai, ollama, llm, local-ai, connector
 Requires at least: 6.9
 Tested up to: 7.0
-Stable tag: 1.0.2
+Stable tag: 1.0.0
 Requires PHP: 7.4
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-AI Provider for OpenAI for the PHP AI Client SDK.
+AI Provider for Ollama (local LLMs) for the PHP AI Client SDK.
 
 == Description ==
 
-This plugin provides OpenAI integration for the PHP AI Client SDK. It enables WordPress sites to use OpenAI's GPT models for text generation, DALL-E for image generation, and other AI capabilities.
+This plugin provides Ollama integration for the PHP AI Client SDK. It enables WordPress sites to use locally hosted Ollama models for text generation.
+
+**Note:** This plugin is a fork of the [AI Provider for OpenAI](https://github.com/WordPress/ai-provider-for-openai) connector, adapted for local Ollama usage. Unlike connectors that are registered through the Connector Settings screen, this provider is registered automatically when the plugin is activated — no additional configuration step is required in the admin UI.
 
 **Features:**
 
-* Text generation with GPT models
-* Image generation with DALL-E models
-* Function calling support
-* Web search support
+* Text generation with locally installed Ollama models
 * Automatic provider registration
 
-Available models are dynamically discovered from the OpenAI API, including GPT models for text generation, DALL-E and GPT Image models for image generation, and TTS models for text-to-speech.
+Available models are dynamically discovered at runtime from the local Ollama installation (`/api/tags`).
 
 **Requirements:**
 
 * PHP 7.4 or higher
 * For WordPress 6.9, the [wordpress/php-ai-client](https://github.com/WordPress/php-ai-client) package must be installed
 * For WordPress 7.0 and above, no additional changes are required
-* OpenAI API key
+* A running [Ollama](https://ollama.com) instance with at least one model pulled
 
 == Installation ==
 
-1. Upload the plugin files to `/wp-content/plugins/ai-provider-for-openai/`
+1. Upload the plugin files to `/wp-content/plugins/ai-provider-for-ollama/`
 2. Activate the plugin through the 'Plugins' menu in WordPress
-3. Configure your OpenAI API key via the `OPENAI_API_KEY` environment variable or constant
+3. Configure `OLLAMA_BASE_URL` as needed (defaults to `http://localhost:11434`)
 
 == Frequently Asked Questions ==
 
-= How do I get an OpenAI API key? =
+= How do I use the Ollama provider? =
 
-Visit the [OpenAI Platform](https://platform.openai.com/) to create an account and generate an API key.
+Install and run [Ollama](https://ollama.com) locally, then pull one or more models (e.g. `ollama pull mistral`). No API key is required. By default the plugin connects to `http://localhost:11434`. Override the URL with the `OLLAMA_BASE_URL` environment variable.
+
+= What Ollama features are supported in v1? =
+
+Text generation only. Function calling, web search, image generation, and structured output schemas are not supported in the initial release.
 
 = Does this plugin work without the PHP AI Client? =
 
-No, this plugin requires the PHP AI Client plugin to be installed and activated. It provides the OpenAI-specific implementation that the PHP AI Client uses.
+No, this plugin requires the PHP AI Client plugin to be installed and activated. It provides the Ollama-specific implementation that the PHP AI Client uses.
 
 == Changelog ==
 
-= 1.0.2 =
-
-* Add plugin directory assets by @shaunandrews in https://github.com/WordPress/ai-provider-for-openai/pull/7
-* Update tags in readme.txt by @jeffpaul in https://github.com/WordPress/ai-provider-for-openai/pull/9
-* Fix missing input and output modality combinations. by @felixarntz in https://github.com/WordPress/ai-provider-for-openai/pull/11
-* Add provider description by @felixarntz in https://github.com/WordPress/ai-provider-for-openai/pull/12
-
-= 1.0.1 =
-
-* Initial release of the plugin
-* Support for GPT text generation models
-* Support for DALL-E image generation models
-* Function calling support
-* Web search support
-
 = 1.0.0 =
 
-* Initial release of the Composer package
+* Initial release, forked from the [AI Provider for OpenAI](https://github.com/WordPress/ai-provider-for-openai) connector
+* Text generation with locally installed Ollama models via the `/api/chat` endpoint
+* Automatic model discovery via the `/api/tags` endpoint
+* No API key required — connects to a local Ollama instance
+* Automatic provider registration on plugin activation
