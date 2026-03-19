@@ -1,6 +1,8 @@
-# AI Provider for OpenAI
+# AI Provider for Ollama
 
-An AI Provider for OpenAI for the [PHP AI Client](https://github.com/WordPress/php-ai-client) SDK. Works as both a Composer package and a WordPress plugin.
+An AI Provider for [Ollama](https://ollama.com) (local LLMs) for the [PHP AI Client](https://github.com/WordPress/php-ai-client) SDK. Works as both a Composer package and a WordPress plugin.
+
+> **Note:** This is a fork of the [AI Provider for OpenAI](https://github.com/WordPress/ai-provider-for-openai) plugin, adapted for local Ollama usage. The Ollama connector is registered automatically on plugin activation — there is no separate step in the Connector Settings screen.
 
 ## Requirements
 
@@ -13,13 +15,13 @@ An AI Provider for OpenAI for the [PHP AI Client](https://github.com/WordPress/p
 ### As a Composer Package
 
 ```bash
-composer require wordpress/ai-provider-for-openai
+composer require guzmandrade-dev/ai-provider-for-ollama
 ```
 
 ### As a WordPress Plugin
 
 1. Download the plugin files
-2. Upload to `/wp-content/plugins/ai-provider-for-openai/`
+2. Upload to `/wp-content/plugins/ai-provider-for-ollama/`
 3. Ensure the PHP AI Client plugin is installed and activated
 4. Activate the plugin through the WordPress admin
 
@@ -27,15 +29,14 @@ composer require wordpress/ai-provider-for-openai
 
 ### With WordPress
 
-The provider automatically registers itself with the PHP AI Client on the `init` hook. Simply ensure both plugins are active and configure your API key:
+The provider automatically registers itself with the PHP AI Client on the `init` hook.
 
 ```php
-// Set your OpenAI API key (or use the OPENAI_API_KEY environment variable)
-putenv('OPENAI_API_KEY=your-api-key');
+// Optionally override the base URL (defaults to http://localhost:11434)
+putenv('OLLAMA_BASE_URL=http://localhost:11434');
 
-// Use the provider
 $result = AiClient::prompt('Hello, world!')
-    ->usingProvider('openai')
+    ->usingProvider('ollama')
     ->generateTextResult();
 ```
 
@@ -43,18 +44,16 @@ $result = AiClient::prompt('Hello, world!')
 
 ```php
 use WordPress\AiClient\AiClient;
-use WordPress\OpenAiAiProvider\Provider\OpenAiProvider;
+use WordPress\OllamaAiProvider\Provider\OllamaProvider;
 
-// Register the provider
 $registry = AiClient::defaultRegistry();
-$registry->registerProvider(OpenAiProvider::class);
+$registry->registerProvider(OllamaProvider::class);
 
-// Set your API key
-putenv('OPENAI_API_KEY=your-api-key');
+// Optional: override base URL (defaults to http://localhost:11434)
+putenv('OLLAMA_BASE_URL=http://localhost:11434');
 
-// Generate text
 $result = AiClient::prompt('Explain quantum computing')
-    ->usingProvider('openai')
+    ->usingProvider('ollama')
     ->generateTextResult();
 
 echo $result->toText();
@@ -62,15 +61,24 @@ echo $result->toText();
 
 ## Supported Models
 
-Available models are dynamically discovered from the OpenAI API. This includes GPT models for text generation, DALL-E and GPT Image models for image generation, and TTS models for text-to-speech. See the [OpenAI documentation](https://platform.openai.com/docs/models) for the full list of available models.
+Available models are dynamically discovered from your local Ollama installation via the `/api/tags` endpoint. Only text generation models are supported in v1. Pull models with `ollama pull <model>` before use (e.g. `ollama pull mistral`).
 
 ## Configuration
 
-The provider uses the `OPENAI_API_KEY` environment variable for authentication. You can set this in your environment or via PHP:
+### Ollama
+
+Ollama requires no API key. By default the provider connects to `http://localhost:11434`. Override with the `OLLAMA_BASE_URL` environment variable:
 
 ```php
-putenv('OPENAI_API_KEY=your-api-key');
+putenv('OLLAMA_BASE_URL=http://my-ollama-host:11434');
 ```
+
+Ollama must be running and have at least one model pulled (`ollama pull <model>`) before the provider will report as available.
+
+### Limitations (Ollama v1)
+
+- Text generation only (image generation is not supported)
+- Function calling, web search, and structured output schemas are not supported
 
 ## License
 

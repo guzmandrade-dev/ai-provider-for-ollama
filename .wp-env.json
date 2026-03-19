@@ -1,0 +1,14 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/wp-env.json",
+    "testsEnvironment": false,
+    "phpVersion": "8.3",
+    "plugins": [
+        "https://downloads.wordpress.org/plugin/wordpress-beta-tester.zip"
+    ],
+    "mappings": {
+        "wp-content/plugins/ai-provider-for-ollama": "."
+    },
+    "config": {
+        "OLLAMA_BASE_URL": "http://host.docker.internal:11434"
+    }
+}

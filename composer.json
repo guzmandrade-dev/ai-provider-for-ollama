@@ -1,10 +1,10 @@
 {
-    "name": "wordpress/ai-provider-for-openai",
-    "description": "AI Provider for OpenAI for the PHP AI Client SDK. Works as both a Composer package and WordPress plugin.",
+    "name": "guzmandrade-dev/ai-provider-for-ollama",
+    "description": "AI Provider for Ollama for the PHP AI Client SDK. Works as both a Composer package and WordPress plugin.",
     "license": "GPL-2.0-or-later",
     "keywords": [
         "ai",
-        "openai",
+        "ollama",
         "gpt",
         "wordpress",
         "llm"
@@ -13,12 +13,16 @@
         {
             "name": "WordPress AI Team",
             "homepage": "https://make.wordpress.org/ai/"
+        },
+        {
+            "name": "Mauricio Andrade",
+            "homepage": "https://github.com/guzmandrade-dev"
         }
     ],
-    "homepage": "https://github.com/WordPress/ai-provider-for-openai",
+    "homepage": "https://github.com/guzmandrade-dev/ai-provider-for-ollama",
     "support": {
-        "issues": "https://github.com/WordPress/ai-provider-for-openai/issues",
-        "source": "https://github.com/WordPress/ai-provider-for-openai"
+        "issues": "https://github.com/guzmandrade-dev/ai-provider-for-ollama/issues",
+        "source": "https://github.com/guzmandrade-dev/ai-provider-for-ollama"
     },
     "require": {
         "php": ">=7.4"
@@ -38,7 +42,7 @@
     "prefer-stable": true,
     "autoload": {
         "psr-4": {
-            "WordPress\\OpenAiAiProvider\\": "src/"
+            "WordPress\\OllamaAiProvider\\": "src/"
         }
     },
     "config": {

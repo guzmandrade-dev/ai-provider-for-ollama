@@ -1,29 +1,31 @@
 <?php
 
 /**
- * PSR-4 autoloader for the AI Provider for OpenAI package.
+ * PSR-4 autoloader for the AI Provider for Ollama package.
  *
  * @since 1.0.0
  *
- * @package WordPress\OpenAiAiProvider
+ * @package WordPress\OllamaAiProvider
  */
 
 declare(strict_types=1);
 
-spl_autoload_register(static function (string $class): void {
-    $prefix = 'WordPress\\OpenAiAiProvider\\';
-    $baseDir = __DIR__ . '/';
+spl_autoload_register(
+	static function ( string $class ): void {
+		$prefix  = 'WordPress\\OllamaAiProvider\\';
+		$baseDir = __DIR__ . '/';
 
-    $len = strlen($prefix);
+		$len = strlen( $prefix );
 
-    if (strncmp($class, $prefix, $len) !== 0) {
-        return;
-    }
+		if ( strncmp( $class, $prefix, $len ) !== 0 ) {
+			return;
+		}
 
-    $relativeClass = substr($class, $len);
-    $file = $baseDir . str_replace('\\', '/', $relativeClass) . '.php';
+		$relativeClass = substr( $class, $len );
+		$file          = $baseDir . str_replace( '\\', '/', $relativeClass ) . '.php';
 
-    if (file_exists($file)) {
-        require $file;
-    }
-});
+		if ( file_exists( $file ) ) {
+			require $file;
+		}
+	}
+);
